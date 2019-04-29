@@ -1,0 +1,20 @@
+﻿
+SIMPLE OUTLINE OF THE SIMULATOR
+
+
+ * SIMLATOR ENGINE
+   * SPACECRAFTS
+     * STAGES
+       * ENGINES
+         * THRUST
+         * THROTTLE RANGE
+         * REFIREABLE
+         * FUEL USAGE
+         * OX USAGE
+		 * VECTOR RANGE
+       * TOTAL WEIGHT
+       * DRY WEIGHT
+       * FUEL WEIGHT
+       * OX WEIGHT
+  * EARTH
+  * MOON
