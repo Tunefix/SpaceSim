@@ -26,9 +26,15 @@ namespace SpaceSim
 
 			lbl_gameSpeed = new Label();
 			lbl_gameSpeed.Location = new System.Drawing.Point(10, 50);
-			lbl_gameSpeed.Size = new System.Drawing.Size(400, 20);
+			lbl_gameSpeed.Size = new System.Drawing.Size(200, 20);
 			lbl_gameSpeed.Text = "Δt: ";
 			this.Controls.Add(lbl_gameSpeed);
+
+			lbl_MET = new Label();
+			lbl_MET.Location = new System.Drawing.Point(210, 50);
+			lbl_MET.Size = new System.Drawing.Size(200, 20);
+			lbl_MET.Text = "MET: 000:00:00";
+			this.Controls.Add(lbl_MET);
 
 			gameSpeedUp = new Button();
 			gameSpeedUp.Location = new System.Drawing.Point(10, 70);
@@ -46,7 +52,7 @@ namespace SpaceSim
 
 			debug = new Label();
 			debug.Location = new System.Drawing.Point(420, 10);
-			debug.Size = new System.Drawing.Size(200, 400);
+			debug.Size = new System.Drawing.Size(200, ClientRectangle.Height - 20);
 			this.Controls.Add(debug);
 
 			preview = new OrbitVisualizer(spaceitems);
@@ -60,7 +66,7 @@ namespace SpaceSim
 			ThrustX.Text = "Thrust +X";
 			//ThrustX.MouseDown += TrustXOn;
 			//ThrustX.MouseUp += TrustXOff;
-			this.Controls.Add(ThrustX);
+			//this.Controls.Add(ThrustX);
 
 			ThrustNegX = new Button();
 			ThrustNegX.Location = new System.Drawing.Point(410, 430);
@@ -68,7 +74,7 @@ namespace SpaceSim
 			ThrustNegX.Text = "Thrust -X";
 			//ThrustNegX.MouseDown += TrustnegXOn;
 			//ThrustNegX.MouseUp += TrustnegXOff;
-			this.Controls.Add(ThrustNegX);
+			//this.Controls.Add(ThrustNegX);
 		}
 
 		private void IncreaseGameSpeed(object sender, EventArgs e)
@@ -84,7 +90,8 @@ namespace SpaceSim
 				case 20: gameSpeed = 50; break;
 				case 50: gameSpeed = 100; break;
 				case 100: gameSpeed = 1000; break;
-				case 1000: gameSpeed = 1000; break;
+				case 1000: gameSpeed = 5000; break;
+				case 5000: gameSpeed = 5000; break;
 			}
 		}
 
@@ -102,6 +109,7 @@ namespace SpaceSim
 				case 50: gameSpeed = 20; break;
 				case 100: gameSpeed = 50; break;
 				case 1000: gameSpeed = 100; break;
+				case 5000: gameSpeed = 1000; break;
 			}
 		}
 

@@ -18,8 +18,8 @@ namespace SpaceSim
 		{
 			this.type = SpaceItemType.SPACECRAFT;
 			// JUST PUT IT IN SOME ORBIT FOR NOW
-			position = new Tuple<double, double, double>(6571000, 0, 1);
-			velocity = new Tuple<double, double, double>(0, 7790, 100);
+			position = new Tuple<double, double, double>(-6571000, -6571000, 0);
+			velocity = new Tuple<double, double, double>(7000, -7000, 0);
 			this.mass = mass;
 			Cd = 0.5;
 			A = 11.95;

@@ -10,7 +10,7 @@ namespace SpaceSim
 	{
         static double GravConst = 6.6740831e-11; // N * m²/kg²     G in equations
 
-        public static List<Tuple<double, double, double>> IteratePosition(SpaceItem moving_item, List<SpaceItem> list, int iterations)
+        public static List<Tuple<double, double, double>> IteratePosition(SpaceItem moving_item, Dictionary<string, SpaceItem> list, int iterations)
 		{
             Tuple<double, double, double> velocity = moving_item.velocity;
             Tuple<double, double, double> position = moving_item.position;
@@ -18,8 +18,9 @@ namespace SpaceSim
 
             for(int i = 0; i < iterations; i++)
             {
-                foreach(SpaceItem s in list)
+                foreach(KeyValuePair<string, SpaceItem> kvp in list)
                 {
+                    SpaceItem s = kvp.Value;
                     if(s != moving_item)
                     {
                         double dist = Helper.VectorLength(Helper.VectorSubtract(s.position, moving_item.position));

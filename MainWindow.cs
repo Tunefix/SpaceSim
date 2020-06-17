@@ -37,6 +37,9 @@ namespace SpaceSim
 			// MAKE EARTH
 			MakeEarth();
 
+			// MAKE MOON
+			MakeMoon();
+
 			// SPAWN SPACEFRAFT
 			MakeSpacecraft();
 
@@ -47,7 +50,6 @@ namespace SpaceSim
 
 		private async void MainLoop()
 		{
-			int curSec = 0;
 			while (true)
 			{
 				start = DateTime.Now;
@@ -81,17 +83,13 @@ namespace SpaceSim
 					deltaTime = duration.Ticks / 10000.0;
 				}
 
-				
+				MET += (deltaTime / 1000.0) * gameSpeed;
+				lbl_MET.Text = "MET: " + Helper.doubleToHHHMMSS(MET);
 
 				lbl_delta.Text = "Δt: " + deltaTime.ToString();
 				lbl_gameSpeed.Text = "GameSpeed: " + gameSpeed.ToString() + "x";
 
-				// Redraw visualizer if we are into a new second
-				if(end.Second != curSec)
-				{
-					curSec = end.Second;
-					preview.Invalidate();
-				}
+				preview.Invalidate();
 			}
 		}
 
@@ -102,14 +100,14 @@ namespace SpaceSim
 			// Handle inputs
 
 			// Update Spaceitems
-			foreach(SpaceItem s in spaceitems)
+			foreach(KeyValuePair<string, SpaceItem> kvp in spaceitems)
 			{
-				s.updateVelocity(deltaTime, spaceitems);
+				kvp.Value.updateVelocity(deltaTime, spaceitems);
 			}
 
-			foreach(SpaceItem s in spaceitems)
+			foreach(KeyValuePair<string, SpaceItem> kvp in spaceitems)
 			{
-				s.updatePosition(deltaTime);
+				kvp.Value.updatePosition(deltaTime);
 			}
 		}
 
@@ -131,8 +129,9 @@ namespace SpaceSim
 		{
 			string debugStr = "";
 			
-			foreach(SpaceItem s in spaceitems)
+			foreach(KeyValuePair<string, SpaceItem> kvp in spaceitems)
 			{
+				SpaceItem s = kvp.Value;
 				debugStr += s.name + "\n";
 				debugStr += "  Lx: " + s.position.Item1.ToString() + "\n";
 				debugStr += "  Ly: " + s.position.Item2.ToString() + "\n";
@@ -141,6 +140,9 @@ namespace SpaceSim
 				debugStr += "  Vy: " + s.velocity.Item2.ToString() + "\n";
 				debugStr += "  Vz: " + s.velocity.Item3.ToString() + "\n";
 				debugStr += "  Vt: " + Helper.VectorLength(s.velocity).ToString() + "\n";
+				debugStr += "\n";
+				debugStr += "  SL: " + (s.position.Item1 * preview.scale).ToString() + "\n";
+				debugStr += "  Pc: " + s.orbitPoints.Count.ToString() + "\n";
 				//debugStr += "  Rx: " + s.stateVectorR.Item1.ToString() + "\n";
 				//debugStr += "  Ry: " + s.stateVectorR.Item2.ToString() + "\n";
 				//debugStr += "  Rz: " + s.stateVectorR.Item3.ToString() + "\n";
@@ -165,6 +167,9 @@ namespace SpaceSim
 				debugStr += "AltX: " + Math.Round(s.hMin).ToString() + " - " + Math.Round(s.hMax).ToString() + "\n";
 				/**/
 			}
+
+			debugStr += "\n";
+			debugStr += "Scale: " + preview.GetScale().ToString() + "\n";
 			debug.Text = debugStr;
 		}
 	}

@@ -21,7 +21,7 @@ namespace SpaceSim
         // The CENTER_OF_UNIVERSE is a special type of item, you should only designate one of these.
         // The CENTER_OF_UNIVERSE will always be at location 0,0,0 and if it moves (because REASONS),
         // the universe moves with it, so it remains at 0,0,0
-        public enum SpaceItemType {ROCK, CENTER_OF_UNIVERSE, PLANET, SPACECRAFT};
+        public enum SpaceItemType {ROCK, CENTER_OF_UNIVERSE, PLANET, MOON, SPACECRAFT};
         public SpaceItemType type = SpaceItemType.ROCK; // a sane default
         double GravConst = 6.6740831e-11; // N * m²/kg²     G in equations
 
@@ -36,9 +36,12 @@ namespace SpaceSim
         public Tuple<double, double, double> selfForce; // in m/s <X, Y, Z>
 
 
-        // Position history
-        public List<Tuple<double, double, double>> orbitPoints = new List<Tuple<double, double, double>>();
-        int maxOrbitPoints = 100000;
+        // Position history (1 point pr. second)
+        public LinkedList<Tuple<double, double, double>> orbitPoints = new LinkedList<Tuple<double, double, double>>();
+        public int maxOrbitPoints = 7200; // (120 minutes)
+
+        // Temporary points (1 point every frame (1/60th sec))
+        public LinkedList<Tuple<double, double, double>> orbitPoints_tmp = new LinkedList<Tuple<double, double, double>>();
 
         public SpaceItem(string name, SpaceItemType type, double mass, double radius)
 		{
@@ -51,10 +54,11 @@ namespace SpaceSim
             this.selfForce = new Tuple<double, double, double>(0,0,0);
 		}
 
-        public void updateVelocity(double deltaTime, List<SpaceItem> items)
+        public void updateVelocity(double deltaTime, Dictionary<string, SpaceItem> items)
         {
-            foreach(SpaceItem s in items)
+            foreach(KeyValuePair<string, SpaceItem> kvp in items)
             {
+                SpaceItem s = kvp.Value;
                 if(s != this)
                 {
                     double dist = Helper.VectorLength(Helper.VectorSubtract(s.position, this.position));
@@ -71,11 +75,37 @@ namespace SpaceSim
         {
             // deltatime is in milliseconds
             position = Helper.VectorAdd(position, Helper.VectorMultiply(velocity, deltaTime / 1000.0));
-            orbitPoints.Add(position);
+            orbitPoints_tmp.AddLast(position);
 
-            if(orbitPoints.Count > maxOrbitPoints)
+            // If we have collected 60 orbitPoints (or more for some reason), average them into the proper collection
+            if(orbitPoints_tmp.Count >= 60)
             {
-                orbitPoints.RemoveAt(0);
+                Tuple<double, double, double> avg = new Tuple<double, double, double>(0,0,0);
+                int values = 0;
+                foreach(Tuple<double, double, double> t in orbitPoints_tmp)
+                {
+                    if(values == 0)
+                    {
+                        // The special first one, just insert into average
+                        avg = t;
+                        values++;
+                    }
+                    else
+                    {
+                        // Calculate interative average
+                        double i1 = avg.Item1 + ((t.Item1 - avg.Item1) / (values + 1));
+                        double i2 = avg.Item2 + ((t.Item2 - avg.Item2) / (values + 1));
+                        double i3 = avg.Item3 + ((t.Item3 - avg.Item3) / (values + 1));
+                        avg = new Tuple<double, double, double>(i1, i2, i3);
+                    }
+                }
+                orbitPoints.AddLast(avg);
+                orbitPoints_tmp.Clear();
+            }         
+
+            while(orbitPoints.Count > maxOrbitPoints)
+            {
+                orbitPoints.RemoveFirst();
             }
         }
 

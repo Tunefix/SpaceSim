@@ -94,5 +94,52 @@ namespace SpaceSim
 
 			return 1.3 * Math.Exp(-(meter / 8500));
 		}
+
+		public static string doubleToHHHMMSS(double seconds)
+		{
+			int s = (int)Math.Floor(seconds);
+
+			int m = (int)Math.Floor(s / 60.0);
+			s -= m * 60;
+
+			int h = (int)Math.Floor(m / 60.0);
+			m -= h * 60;
+
+			string hrs = "000";
+			if(h >= 100)
+			{
+				hrs = h.ToString();
+			}
+			else if(h >= 10)
+			{
+				hrs = "0" + h.ToString();
+			}
+			else if(h > 0)
+			{
+				hrs = "00" + h.ToString();
+			}
+
+			string min = "00";
+			if(m >= 10)
+			{
+				min = m.ToString();
+			}
+			else if (m > 0)
+			{
+				min = "0" + m.ToString();
+			}
+
+			string sec = "00";
+			if(s >= 10)
+			{
+				sec = s.ToString();
+			}
+			else if (s > 0)
+			{
+				sec = "0" + s.ToString();
+			}
+
+			return hrs + ":" + min + ":" + sec;
+		}
 	}
 }

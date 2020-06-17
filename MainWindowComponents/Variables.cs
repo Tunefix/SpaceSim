@@ -15,11 +15,14 @@ namespace SpaceSim
 		DateTime end;
 		TimeSpan duration;
 
+		double MET = 0; // Seconds since liftoff
+
 		int gameSpeed = 1;
 
 		private Label lbl_ups;
 		private Label lbl_delta;
 		private Label lbl_gameSpeed;
+		private Label lbl_MET;
 		private Button gameSpeedUp;
 		private Button gameSpeedDown;
 		private OrbitVisualizer preview;
@@ -29,6 +32,6 @@ namespace SpaceSim
 
 		private Label debug;
 
-		private List<SpaceItem> spaceitems = new List<SpaceItem>();
+		private Dictionary<string, SpaceItem> spaceitems = new Dictionary<string, SpaceItem>();
 	}
 }
