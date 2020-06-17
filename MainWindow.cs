@@ -47,6 +47,7 @@ namespace SpaceSim
 
 		private async void MainLoop()
 		{
+			int curSec = 0;
 			while (true)
 			{
 				start = DateTime.Now;
@@ -84,6 +85,13 @@ namespace SpaceSim
 
 				lbl_delta.Text = "Δt: " + deltaTime.ToString();
 				lbl_gameSpeed.Text = "GameSpeed: " + gameSpeed.ToString() + "x";
+
+				// Redraw visualizer if we are into a new second
+				if(end.Second != curSec)
+				{
+					curSec = end.Second;
+					preview.Invalidate();
+				}
 			}
 		}
 
@@ -103,9 +111,6 @@ namespace SpaceSim
 			{
 				s.updatePosition(deltaTime);
 			}
-
-			// Redraw visualizer
-			preview.Invalidate();
 		}
 
 		private void UpdateOutputs()
@@ -135,6 +140,7 @@ namespace SpaceSim
 				debugStr += "  Vx: " + s.velocity.Item1.ToString() + "\n";
 				debugStr += "  Vy: " + s.velocity.Item2.ToString() + "\n";
 				debugStr += "  Vz: " + s.velocity.Item3.ToString() + "\n";
+				debugStr += "  Vt: " + Helper.VectorLength(s.velocity).ToString() + "\n";
 				//debugStr += "  Rx: " + s.stateVectorR.Item1.ToString() + "\n";
 				//debugStr += "  Ry: " + s.stateVectorR.Item2.ToString() + "\n";
 				//debugStr += "  Rz: " + s.stateVectorR.Item3.ToString() + "\n";

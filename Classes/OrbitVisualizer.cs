@@ -57,6 +57,16 @@ namespace SpaceSim
 							(float)((this.Height / 2f) + (future[i+1].Item2 * -scale))
 							);
 					}
+
+					for(int i = 0; i < s.orbitPoints.Count - 1; i++)
+					{
+						g.DrawLine(orbitPenG,
+							(float)((this.Width / 2f) + (s.orbitPoints[i].Item1 * scale)),
+							(float)((this.Height / 2f) + (s.orbitPoints[i].Item2 * -scale)),
+							(float)((this.Width / 2f) + (s.orbitPoints[i+1].Item1 * scale)),
+							(float)((this.Height / 2f) + (s.orbitPoints[i+1].Item2 * -scale))
+							);
+					}
 				}
 			}
 			

@@ -37,7 +37,8 @@ namespace SpaceSim
 
 
         // Position history
-        List<Tuple<double, double, double>> orbitPoints = new List<Tuple<double, double, double>>();
+        public List<Tuple<double, double, double>> orbitPoints = new List<Tuple<double, double, double>>();
+        int maxOrbitPoints = 100000;
 
         public SpaceItem(string name, SpaceItemType type, double mass, double radius)
 		{
@@ -60,17 +61,19 @@ namespace SpaceSim
                     Tuple<double, double, double> direction = Helper.VectorNormalize(Helper.VectorSubtract(s.position, this.position));
                     Tuple<double, double, double> force = Helper.VectorMultiply(direction, GravConst * ((this.mass * s.mass) / (dist * dist)));
                     Tuple<double, double, double> acc = Helper.VectorDivide(force, this.mass);
-                    velocity = Helper.VectorAdd(velocity, Helper.VectorMultiply(acc, deltaTime));
+                    // deltatime is in milliseconds
+                    velocity = Helper.VectorAdd(velocity, Helper.VectorMultiply(acc, deltaTime / 1000.0));
                 }
             }
         }
 
         public void updatePosition(double deltaTime)
         {
-            position = Helper.VectorAdd(position, Helper.VectorMultiply(velocity, deltaTime));
+            // deltatime is in milliseconds
+            position = Helper.VectorAdd(position, Helper.VectorMultiply(velocity, deltaTime / 1000.0));
             orbitPoints.Add(position);
 
-            if(orbitPoints.Count > 10000)
+            if(orbitPoints.Count > maxOrbitPoints)
             {
                 orbitPoints.RemoveAt(0);
             }
