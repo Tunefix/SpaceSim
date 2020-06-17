@@ -16,7 +16,17 @@ namespace SpaceSim
 	{
 		public MainWindow()
 		{
-			InitializeComponent();
+			this.SuspendLayout();
+			// 
+			// MainWindow
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.Name = "MainWindow";
+			this.Text = "SpaceSim";
+			this.Load += new System.EventHandler(this.MainWindow_Load);
+			this.ResumeLayout(false);
 		}
 
 		private void MainWindow_Load(object sender, EventArgs e)
@@ -92,6 +102,7 @@ namespace SpaceSim
 			foreach (Spacecraft s in spacecrafts)
 			{
 				preview.AddOrbitPoint(s.stateVectorL);
+				preview.UpdateOrbitData(s.e, s.sma, s.i, s.omega, s.argp, s.nu);
 			}
 
 			// Update Outputs
@@ -124,7 +135,8 @@ namespace SpaceSim
 				debugStr += "argp: " + s.argp.ToString() + "\n";
 				debugStr += "  nu: " + s.nu.ToString() + "\n";
 				debugStr += " nu°: " + Helper.rad2deg(s.nu).ToString() + "\n";
-				debugStr += "   e: " + s.e.ToString() + "\n\n";
+				debugStr += "   e: " + s.e.ToString() + "\n";
+				debugStr += "   d: " + Helper.DensityAtAltitude(s.altitude).ToString() + "\n";
 				debugStr += " Per: " + Math.Round(s.Periapse).ToString() + "\n";
 				debugStr += " Apo: " + Math.Round(s.Apoapse).ToString() + "\n";
 				debugStr += " Hgt: " + Math.Round(s.altitude).ToString() + "\n";

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Deterministic>False</Deterministic>
+    <Company>Tunefix</Company>
+    <Authors>Kristoffer Tonheim</Authors>
+    <PackageId>SpaceSim</PackageId>
+    <AssemblyVersion>0.1.*</AssemblyVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+  
+</Project>

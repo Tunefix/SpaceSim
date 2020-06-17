@@ -56,5 +56,33 @@ namespace SpaceSim
 		{
 			return (degrees / 180) * Math.PI;
 		}
+
+		public static double DensityAtAltitude(double meter)
+		{
+			/*
+			double T = 0;
+			double p = 0;
+			if(meter < 11000) // Troposhpere
+			{
+				T = 15.04 - (0.00649 * meter);
+				p = 101.29 * Math.Pow((T + 273.1) / 288.08, 5.256);
+			}
+			else if(meter < 25000) // Lower Stratosphere
+			{
+				T = -56.46;
+				p = 22.65 * Math.Pow(Math.E, 1.73 - (0.000157 * meter));
+			}
+			else
+			{
+				T = -131.21 + (0.00299 * meter);
+				p = 2.488 * Math.Pow((T + 273.1) / 216.6, -11.388);
+			}
+
+			double d = p / (0.2869 * (T + 273.1));
+			return d;
+			*/
+
+			return 1.3 * Math.Exp(-(meter / 8500));
+		}
 	}
 }

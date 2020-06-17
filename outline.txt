@@ -16,5 +16,12 @@ SIMPLE OUTLINE OF THE SIMULATOR
        * DRY WEIGHT
        * FUEL WEIGHT
        * OX WEIGHT
+	 * ELECTRICAL SYSTEM
+	   * SOURCE
+	     * TYPE (Generator, battery)
+		 * FUEL (H2/O2)
+		 * VOLTAGE
+		 * MAX AMPS
+		 * FUEL PR. WATT
   * EARTH
   * MOON

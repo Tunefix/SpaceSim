@@ -21,6 +21,7 @@ namespace SpaceSim
 		
 		public Tuple<double, double, double> stateVectorL; // Location/Position
 		public Tuple<double, double, double> stateVectorV; // Velocity/Speed
+		public Tuple<double, double, double> stateVectorVG; // Velocity/Speed with only gravity
 		public Tuple<double, double, double> stateVectorR; // Rotation
 
 		// ADD CLASSIC ORBITAL ELEMENTS HERE
@@ -49,8 +50,6 @@ namespace SpaceSim
 		public double radius;
 		public double altitude;
 
-		public string name;
-		public double mass; // Kg
 
 		public double aMax;
 		public double aMin;
@@ -59,6 +58,13 @@ namespace SpaceSim
 		public double hMax;
 		public double hMin;
 		private bool firstRun = true;
+
+
+		// SPACECRAFT DATA
+		public string name;
+		public double mass; // Kg
+		public double Cd; // Drag coefficient
+		public double A; // Reference area (m²)
 
 		double EarthWeight = 5.974e24; // kg
 		double GravConst = 6.6740831e-11; // N * m²/kg²     G in equations
@@ -78,6 +84,8 @@ namespace SpaceSim
 			stateVectorV = new Tuple<double, double, double>(0, 7790, 100);
 			stateVectorR = new Tuple<double, double, double>(0, 0, 0);
 			mass = 26000;
+			Cd = 0.5;
+			A = 11.95;
 		}
 
 		public void Update(double deltaTime)
@@ -86,6 +94,7 @@ namespace SpaceSim
 
 			// Acceleration from Earth (Gravity)
 			radius = Math.Sqrt(Math.Pow(stateVectorL.Item1, 2) + Math.Pow(stateVectorL.Item2, 2) + Math.Pow(stateVectorL.Item3, 2));
+			altitude = radius - EarthRadius;
 
 			double Acceleration = GravConst * (EarthWeight / Math.Pow(radius, 2));
 
@@ -100,6 +109,9 @@ namespace SpaceSim
 			// Add Earth acceleration to velocity vector
 			stateVectorV = Helper.VectorAdd(stateVectorV, AccV);
 
+			// Store the velocity vector with only gravity added
+			stateVectorVG = stateVectorV;
+
 
 
 			// Scale Thrust
@@ -109,20 +121,25 @@ namespace SpaceSim
 			stateVectorV = Helper.VectorAdd(stateVectorV, scaledThrust);
 
 
+			// AERODYNAMIC DRAG
+			double dAlt = Helper.DensityAtAltitude(altitude);
+			double v2 = Math.Pow(Helper.VectorLength(stateVectorV), 2);
+			double AtmDrag = 0.5 * ((dAlt * Cd * A) / mass) * v2;
+			AtmDrag = AtmDrag * (deltaTime / 1000.0);
+			stateVectorV = Helper.VectorMultiply(stateVectorV, 1 - (AtmDrag / Helper.VectorLength(stateVectorV)));
+
+
 			// UPDATE POSITION VECTOR
 			Tuple<double, double, double> scaledV = Helper.VectorMultiply(stateVectorV, deltaTime / 1000.0);
 			stateVectorL = Helper.VectorAdd(stateVectorL, scaledV);
 
 			// Orbital Momentum Vector
-			h0 = h;
 			h = Helper.VectorCrossProduct(stateVectorL, stateVectorV);
 
-			// Momentum Vector
-			l0 = l;
-			l = Helper.VectorCrossProduct(stateVectorL, Helper.VectorMultiply(stateVectorV, mass));
-
+			
 			// CALCULATE GEE
-			gee = Math.Abs((Helper.VectorLength(l0) - Helper.VectorLength(l)) / (deltaTime / 1000.0));
+			gee = Math.Abs((Helper.VectorLength(stateVectorV) - Helper.VectorLength(stateVectorVG)) / (deltaTime / 1000.0));
+			gee = gee / 9.80665;
 
 			DeriveOrbitalElements();
 			MinMax();

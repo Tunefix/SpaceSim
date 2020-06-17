@@ -83,7 +83,8 @@ namespace SpaceSim
 				case 10: gameSpeed = 20; break;
 				case 20: gameSpeed = 50; break;
 				case 50: gameSpeed = 100; break;
-				case 100: gameSpeed = 100; break;
+				case 100: gameSpeed = 1000; break;
+				case 1000: gameSpeed = 1000; break;
 			}
 		}
 
@@ -100,6 +101,7 @@ namespace SpaceSim
 				case 20: gameSpeed = 10; break;
 				case 50: gameSpeed = 20; break;
 				case 100: gameSpeed = 50; break;
+				case 1000: gameSpeed = 100; break;
 			}
 		}
 

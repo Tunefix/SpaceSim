@@ -19,7 +19,14 @@ namespace SpaceSim
 		readonly Brush craft = new SolidBrush(Color.FromArgb(255, 255, 255));
 		readonly Pen earthPen = new Pen(Color.FromArgb(0, 0, 255), 1f);
 		readonly Pen orbitPen = new Pen(Color.FromArgb(192, 0, 0), 1f);
-		readonly Pen forbitPen = new Pen(Color.FromArgb(0, 192, 0), 1f);
+		readonly Pen orbitPenG = new Pen(Color.FromArgb(0, 192, 0), 1f);
+
+		double eccentricity;
+		double semiMajorAxis;
+		double inclination;
+		double longitudeOfAscendingNode;
+		double argumentOfPeriapsis;
+		double trueAnomaly;
 
 		List<Tuple<double, double>> orbitPointsXY = new List<Tuple<double, double>>();
 
@@ -40,7 +47,7 @@ namespace SpaceSim
 			// DRAW EARTH
 			g.FillEllipse(center, (float)((this.Width / 2f) - (earthRadius * scale)), (float)((this.Height / 2f) - (earthRadius * scale)), (float)(2 * (earthRadius * scale)), (float)(2 * (earthRadius * scale)));
 
-			// DRAW ORBIT
+			// DRAW PAST POSITIONS
 			if(orbitPointsXY.Count > 1)
 			{
 				for(int i = 0; i < orbitPointsXY.Count - 1; i++)
@@ -52,6 +59,23 @@ namespace SpaceSim
 						(float)((this.Height / 2f) + (orbitPointsXY[i+1].Item2 * -scale))
 						);
 				}
+			}
+
+			// DRAW CURRENT ELLIPSIS
+			if(eccentricity < 1 && eccentricity > 0 && false)
+			{
+				float x = 200;
+				float y = 100;
+				float width = (float)(semiMajorAxis * 2 * scale);
+				float height = (float)(width * (1 - eccentricity)) / 2f;
+
+				GraphicsState state = g.Save();
+
+				//g.RotateTransform((float)(trueAnomaly + argumentOfPeriapsis));
+				g.RotateTransform((float)(45));
+				g.DrawEllipse(orbitPenG, x, y, width, height);
+
+				g.Restore(state);
 			}
 
 			// DRAW SPACECRAFT-DOT
@@ -67,6 +91,16 @@ namespace SpaceSim
 			if (orbitPointsXY.Count > 108000) orbitPointsXY.RemoveAt(0);
 
 			this.Invalidate();
+		}
+
+		public void UpdateOrbitData(double eccentricity, double semiMajorAxis, double inclination, double longitudeOfAscendingNode, double argumentOfPeriapsis, double trueAnomaly)
+		{
+			this.eccentricity = eccentricity;
+			this.semiMajorAxis = semiMajorAxis;
+			this.inclination = inclination;
+			this.longitudeOfAscendingNode = longitudeOfAscendingNode;
+			this.argumentOfPeriapsis = argumentOfPeriapsis;
+			this.trueAnomaly = trueAnomaly;
 		}
 	}
 }
