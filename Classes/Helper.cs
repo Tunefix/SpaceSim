@@ -47,6 +47,16 @@ namespace SpaceSim
 			return (v1.Item1 * v2.Item1) + (v1.Item2 * v2.Item2) + (v1.Item3 * v2.Item3);
 		}
 
+		public static Tuple<double, double, double> VectorNormalize(Tuple<double, double, double> v)
+		{
+			double maxVal = 0;
+			if(Math.Abs(v.Item1) > maxVal) maxVal = Math.Abs(v.Item1);
+			if(Math.Abs(v.Item2) > maxVal) maxVal = Math.Abs(v.Item2);
+			if(Math.Abs(v.Item3) > maxVal) maxVal = Math.Abs(v.Item3);
+
+			return new Tuple<double, double, double>(v.Item1 / maxVal, v.Item2 / maxVal, v.Item3 / maxVal);
+		}
+
 		public static double rad2deg(double radians)
 		{
 			return (radians * 180) / Math.PI;

@@ -11,7 +11,12 @@ namespace SpaceSim
 	{
 		private void MakeSpacecraft()
 		{
-			spacecrafts.Add(new Spacecraft("TESTCRAFT"));
+			spaceitems.Add(new Spacecraft("TESTCRAFT", 26000, 5));
+		}
+
+		private void MakeEarth()
+		{
+			spaceitems.Add(new SpaceItem("EARTH", SpaceItem.SpaceItemType.CENTER_OF_UNIVERSE, 5.974e24, 6371000));
 		}
 	}
 }

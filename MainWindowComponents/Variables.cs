@@ -29,6 +29,6 @@ namespace SpaceSim
 
 		private Label debug;
 
-		private List<Spacecraft> spacecrafts = new List<Spacecraft>();
+		private List<SpaceItem> spaceitems = new List<SpaceItem>();
 	}
 }

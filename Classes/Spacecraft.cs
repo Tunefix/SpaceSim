@@ -6,88 +6,26 @@ using System.Threading.Tasks;
 
 namespace SpaceSim
 {
-	class Spacecraft
+	class Spacecraft : SpaceItem
 	{
-		/**
-		 * THE VECTORS ARE DEFINED THUSLY:
-		 * Item1: X-axis points out from the center of the earth and through the equator at 0°
-		 * Item2: Y-axis points out from the center of the earth and through the equator at 90° E
-		 * Item3: z-axis points out from the center of the earth and through the north pole
-		 * 
-		 * The units for Location is meters
-		 * The units for Velocity is m/s
-		 * The units for Rotation is degrees
-		 **/
 		
-		public Tuple<double, double, double> stateVectorL; // Location/Position
-		public Tuple<double, double, double> stateVectorV; // Velocity/Speed
-		public Tuple<double, double, double> stateVectorVG; // Velocity/Speed with only gravity
-		public Tuple<double, double, double> stateVectorR; // Rotation
-
-		// ADD CLASSIC ORBITAL ELEMENTS HERE
-		public double a; // Periapse
-		public double p; // Apoapse
-		public double sma; // Semi-Major Axis
-
-		public double Periapse;
-		public double Apoapse;
-
-		public Tuple<double, double, double> h = new Tuple<double, double, double>(0, 0, 0); // Orbital Momentum Vector
-		public Tuple<double, double, double> h0; // Previous Orbital Momentum Vector
-
-		public Tuple<double, double, double> l = new Tuple<double, double, double>(0, 0, 0); // Momentum Vector
-		public Tuple<double, double, double> l0; // Previous Momentum Vector
-
-		public double gee;
-
-		public double i;
-		public double omega;
-		public double argp;
-		public double nu;
-
-		public double e;
-
-		public double radius;
-		public double altitude;
-
-
-		public double aMax;
-		public double aMin;
-		public double pMax;
-		public double pMin;
-		public double hMax;
-		public double hMin;
-		private bool firstRun = true;
-
-
 		// SPACECRAFT DATA
-		public string name;
-		public double mass; // Kg
 		public double Cd; // Drag coefficient
 		public double A; // Reference area (m²)
 
-		double EarthWeight = 5.974e24; // kg
-		double GravConst = 6.6740831e-11; // N * m²/kg²     G in equations
 
-		double EarthRadius = 6371000; // m
-
-
-		public Tuple<double, double, double> thrust = new Tuple<double, double, double>(0,0,0);
-		public List<Tuple<double, double, double>> FutureOrbitPoints = new List<Tuple<double, double, double>>();
-
-
-		public Spacecraft(string name)
+		public Spacecraft(string name, double mass, double radius) : base (name, SpaceItemType.SPACECRAFT, mass, radius)
 		{
-			this.name = name;
+			this.type = SpaceItemType.SPACECRAFT;
 			// JUST PUT IT IN SOME ORBIT FOR NOW
-			stateVectorL = new Tuple<double, double, double>(6571000, 0, 1);
-			stateVectorV = new Tuple<double, double, double>(0, 7790, 100);
-			stateVectorR = new Tuple<double, double, double>(0, 0, 0);
-			mass = 26000;
+			position = new Tuple<double, double, double>(6571000, 0, 1);
+			velocity = new Tuple<double, double, double>(0, 7790, 100);
+			this.mass = mass;
 			Cd = 0.5;
 			A = 11.95;
 		}
 
+/**
 		public void Update(double deltaTime)
 		{
 			// UPDATE VELOCITY VECTOR
@@ -255,5 +193,6 @@ namespace SpaceSim
 				if (altitude < hMin) hMin = altitude;
 			}
 		}
+		**/
 	}
 }

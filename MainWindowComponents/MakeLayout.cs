@@ -49,7 +49,7 @@ namespace SpaceSim
 			debug.Size = new System.Drawing.Size(200, 400);
 			this.Controls.Add(debug);
 
-			preview = new OrbitVisualizer();
+			preview = new OrbitVisualizer(spaceitems);
 			preview.Location = new System.Drawing.Point(10, 110);
 			preview.Size = new System.Drawing.Size(400, 400);
 			this.Controls.Add(preview);
@@ -58,16 +58,16 @@ namespace SpaceSim
 			ThrustX.Location = new System.Drawing.Point(410, 410);
 			ThrustX.Size = new System.Drawing.Size(80, 20);
 			ThrustX.Text = "Thrust +X";
-			ThrustX.MouseDown += TrustXOn;
-			ThrustX.MouseUp += TrustXOff;
+			//ThrustX.MouseDown += TrustXOn;
+			//ThrustX.MouseUp += TrustXOff;
 			this.Controls.Add(ThrustX);
 
 			ThrustNegX = new Button();
 			ThrustNegX.Location = new System.Drawing.Point(410, 430);
 			ThrustNegX.Size = new System.Drawing.Size(80, 20);
 			ThrustNegX.Text = "Thrust -X";
-			ThrustNegX.MouseDown += TrustnegXOn;
-			ThrustNegX.MouseUp += TrustnegXOff;
+			//ThrustNegX.MouseDown += TrustnegXOn;
+			//ThrustNegX.MouseUp += TrustnegXOff;
 			this.Controls.Add(ThrustNegX);
 		}
 
@@ -105,9 +105,11 @@ namespace SpaceSim
 			}
 		}
 
-		private void TrustXOn(object sender, EventArgs e) { spacecrafts[0].AddTrust(20, 0, 0); }
-		private void TrustXOff(object sender, EventArgs e) { spacecrafts[0].AddTrust(-20, 0, 0); }
-		private void TrustnegXOn(object sender, EventArgs e) { spacecrafts[0].AddTrust(-20, 0, 0); }
-		private void TrustnegXOff(object sender, EventArgs e) { spacecrafts[0].AddTrust(20, 0, 0); }
+/**
+		private void TrustXOn(object sender, EventArgs e) { spaceitems[0].AddTrust(20, 0, 0); }
+		private void TrustXOff(object sender, EventArgs e) { spaceitems[0].AddTrust(-20, 0, 0); }
+		private void TrustnegXOn(object sender, EventArgs e) { spaceitems[0].AddTrust(-20, 0, 0); }
+		private void TrustnegXOff(object sender, EventArgs e) { spaceitems[0].AddTrust(20, 0, 0); }
+		**/
 	}
 }

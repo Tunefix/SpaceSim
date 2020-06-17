@@ -34,6 +34,9 @@ namespace SpaceSim
 			// MAKE LAYOUT
 			MakeLayout();
 
+			// MAKE EARTH
+			MakeEarth();
+
 			// SPAWN SPACEFRAFT
 			MakeSpacecraft();
 
@@ -90,20 +93,30 @@ namespace SpaceSim
 
 			// Handle inputs
 
-			// Update Spacecraft
-			foreach(Spacecraft s in spacecrafts)
+			// Update Spaceitems
+			foreach(SpaceItem s in spaceitems)
 			{
-				s.Update(deltaTime);
+				s.updateVelocity(deltaTime, spaceitems);
 			}
+
+			foreach(SpaceItem s in spaceitems)
+			{
+				s.updatePosition(deltaTime);
+			}
+
+			// Redraw visualizer
+			preview.Invalidate();
 		}
 
 		private void UpdateOutputs()
 		{
+			/**
 			foreach (Spacecraft s in spacecrafts)
 			{
 				preview.AddOrbitPoint(s.stateVectorL);
 				preview.UpdateOrbitData(s.e, s.sma, s.i, s.omega, s.argp, s.nu);
 			}
+			**/
 
 			// Update Outputs
 			PrintDebug();
@@ -112,22 +125,23 @@ namespace SpaceSim
 		private void PrintDebug()
 		{
 			string debugStr = "";
-			foreach(Spacecraft s in spacecrafts)
+			
+			foreach(SpaceItem s in spaceitems)
 			{
 				debugStr += s.name + "\n";
-				debugStr += "  Lx: " + s.stateVectorL.Item1.ToString() + "\n";
-				debugStr += "  Ly: " + s.stateVectorL.Item2.ToString() + "\n";
-				debugStr += "  Lz: " + s.stateVectorL.Item3.ToString() + "\n";
-				debugStr += "  Vx: " + s.stateVectorV.Item1.ToString() + "\n";
-				debugStr += "  Vy: " + s.stateVectorV.Item2.ToString() + "\n";
-				debugStr += "  Vz: " + s.stateVectorV.Item3.ToString() + "\n";
-				debugStr += "  Rx: " + s.stateVectorR.Item1.ToString() + "\n";
-				debugStr += "  Ry: " + s.stateVectorR.Item2.ToString() + "\n";
-				debugStr += "  Rz: " + s.stateVectorR.Item3.ToString() + "\n";
-				debugStr += "  Tx: " + s.thrust.Item1.ToString() + "\n";
-				debugStr += "  Ty: " + s.thrust.Item2.ToString() + "\n";
-				debugStr += "  Tz: " + s.thrust.Item3.ToString() + "\n";
-				debugStr += " gee: " + Math.Round(s.gee, 3).ToString() + "\n";
+				debugStr += "  Lx: " + s.position.Item1.ToString() + "\n";
+				debugStr += "  Ly: " + s.position.Item2.ToString() + "\n";
+				debugStr += "  Lz: " + s.position.Item3.ToString() + "\n";
+				debugStr += "  Vx: " + s.velocity.Item1.ToString() + "\n";
+				debugStr += "  Vy: " + s.velocity.Item2.ToString() + "\n";
+				debugStr += "  Vz: " + s.velocity.Item3.ToString() + "\n";
+				//debugStr += "  Rx: " + s.stateVectorR.Item1.ToString() + "\n";
+				//debugStr += "  Ry: " + s.stateVectorR.Item2.ToString() + "\n";
+				//debugStr += "  Rz: " + s.stateVectorR.Item3.ToString() + "\n";
+				//debugStr += "  Tx: " + s.thrust.Item1.ToString() + "\n";
+				//debugStr += "  Ty: " + s.thrust.Item2.ToString() + "\n";
+				//debugStr += "  Tz: " + s.thrust.Item3.ToString() + "\n";
+				/**debugStr += " gee: " + Math.Round(s.gee, 3).ToString() + "\n";
 				debugStr += " sma: " + s.sma.ToString() + "\n";
 				debugStr += "   p: " + s.p.ToString() + "\n";
 				debugStr += "   i: " + s.i.ToString() + "\n";
@@ -143,9 +157,8 @@ namespace SpaceSim
 				debugStr += "ApoX: " + Math.Round(s.aMin).ToString() + " - " + Math.Round(s.aMax).ToString() + "\n";
 				debugStr += "PerX: " + Math.Round(s.pMin).ToString() + " - " + Math.Round(s.pMax).ToString() + "\n";
 				debugStr += "AltX: " + Math.Round(s.hMin).ToString() + " - " + Math.Round(s.hMax).ToString() + "\n";
-
+				/**/
 			}
-
 			debug.Text = debugStr;
 		}
 	}
