@@ -105,9 +105,22 @@ namespace SpaceSim
 				kvp.Value.updateVelocity(deltaTime, spaceitems);
 			}
 
+			// UPDATE ALL ITEMS POSITIONS AND STORE POSITION OF CENTER OF UNIVERSE
+			Tuple<double, double, double> coo = new Tuple<double, double, double>(0,0,0);
 			foreach(KeyValuePair<string, SpaceItem> kvp in spaceitems)
 			{
 				kvp.Value.updatePosition(deltaTime);
+				if(kvp.Value.type == SpaceItem.SpaceItemType.CENTER_OF_UNIVERSE)
+				{
+					coo = new Tuple<double, double, double>(kvp.Value.position.Item1, kvp.Value.position.Item2, kvp.Value.position.Item3);
+				}
+			}
+
+			// MOVE ALL ITEMS BY THE INVERSE OF CENTER OF UNIVERSE'S POSITION
+			// SO THAT COU STAYS AT 0,0,0
+			foreach(KeyValuePair<string, SpaceItem> kvp in spaceitems)
+			{
+				kvp.Value.Move(-coo.Item1, -coo.Item2, -coo.Item3);
 			}
 		}
 

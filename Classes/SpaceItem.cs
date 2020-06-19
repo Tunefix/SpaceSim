@@ -109,5 +109,10 @@ namespace SpaceSim
             }
         }
 
+        public void Move(double x, double y, double z)
+        {
+            position = new Tuple<double, double, double>(position.Item1 + x, position.Item2 + y, position.Item3 + z);
+        }
+
     }
 }
