@@ -32,9 +32,6 @@ namespace SpaceSim
         public Tuple<double, double, double> position; // in m/s <X, Y, Z>
         public Tuple<double, double, double> velocity; // in m/s <X, Y, Z>
 
-        // Some objects can make their own force, with like rockets
-        public Tuple<double, double, double> selfForce; // in m/s <X, Y, Z>
-
 
         // Position history (1 point pr. second)
         public LinkedList<Tuple<double, double, double>> orbitPoints = new LinkedList<Tuple<double, double, double>>();
@@ -51,10 +48,9 @@ namespace SpaceSim
             this.radius = radius;
             this.position = new Tuple<double, double, double>(0,0,0);
             this.velocity = new Tuple<double, double, double>(0,0,0);
-            this.selfForce = new Tuple<double, double, double>(0,0,0);
 		}
 
-        public void updateVelocity(double deltaTime, Dictionary<string, SpaceItem> items)
+        public virtual void updateVelocity(double deltaTime, Dictionary<string, SpaceItem> items)
         {
             foreach(KeyValuePair<string, SpaceItem> kvp in items)
             {
